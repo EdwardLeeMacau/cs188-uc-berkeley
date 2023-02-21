@@ -21,48 +21,50 @@
 
 def question2():
     answerDiscount = 0.9
-    answerNoise = 0.2
+    answerNoise = 0
     return answerDiscount, answerNoise
 
-def question3a():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+def question3a(): #prefer the close exit (+1), risking the cliff (-10)
+    answerDiscount = 0.75
+    answerNoise = 0.25
+    answerLivingReward = -2
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
-def question3b():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+def question3b(): #Prefer the close exit (+1), but avoiding the cliff (-10)
+    answerDiscount = 0.5
+    answerNoise = 0.25
+    answerLivingReward = -2
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
-def question3c():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+def question3c(): #Prefer the distant exit (+10), risking the cliff (-10)
+    answerDiscount = 0.9
+    answerNoise = 0
+    answerLivingReward = 0
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
-def question3d():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+def question3d(): #Prefer the distant exit (+10), avoiding the cliff (-10)
+    answerDiscount = 0.9
+    answerNoise = 0.1
+    answerLivingReward = 0
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
-def question3e():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+def question3e(): #living earns reward->stuck
+    answerDiscount = 1
+    answerNoise = 0
+    answerLivingReward = 1
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question6():
     answerEpsilon = None
     answerLearningRate = None
-    return answerEpsilon, answerLearningRate
+    return 'NOT POSSIBLE'
+    
+    # return answerEpsilon, answerLearningRate
     # If not possible, return 'NOT POSSIBLE'
 
 if __name__ == '__main__':
