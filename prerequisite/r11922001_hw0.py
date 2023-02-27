@@ -29,27 +29,17 @@ class Solution:
         return ans
 
     def solve(self):
-        trace = [1]
+        trace = []
 
-        current = 1
-        while True:
-            # Query possible neighbors, sort to guarantee ascending order
-            ref = self.islands[current]
-            # ref.sort()
+        walk, current = True, 1
+        while walk:
+            # Query possible neighbors
+            trace.append(current)
+            neighbors = self.islands[current]
 
             # Find island that's not go before
-            found = False
-            for adjacency in ref:
-                if adjacency in trace:
-                    continue
-
-                found = True
-                trace.append(adjacency)
-                current = adjacency
-                break
-
-            if not found:
-                break
+            current = next((x for x in neighbors if x not in trace), 0)
+            walk = True if current else False
 
         print(' '.join(map(str, trace)))
 
