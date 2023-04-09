@@ -307,3 +307,67 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         "*** YOUR CODE HERE ***"
         action, _ = self.expectimax(gameState, self.depth, self.index)
         return action
+
+def betterEvaluationFunction(currentGameState: GameState):
+    """
+    Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
+    evaluation function (question 5).
+
+    DESCRIPTION: <write something here so we know what you did>
+    """
+    "*** YOUR CODE HERE ***"
+    newPos = currentGameState.getPacmanPosition()
+    newFood = currentGameState.getFood()
+    # 10 points for every food you eat
+    """
+    Returns a Grid of boolean food indicator variables.
+
+    Grids can be accessed via list notation, so to check
+    if there is food at (x,y), just call
+
+    currentFood = state.getFood()
+    if currentFood[x][y] == True: ...
+    """
+    newCapsule = currentGameState.getCapsules()
+    # 200 points for every ghost you eat
+    # but no point for capsule
+
+    # For Ghost
+    newGhostStates = currentGameState.getGhostStates()
+    # newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
+    # Position of ghost do not change regardless of your state
+    # because you can't predict the future
+    ghostPositions = [ghostState.getPosition() for ghostState in newGhostStates]
+    # Count down from 40 moves
+    # ghostStartPos = [ghostState.start.getPosition() for ghostState in newGhostStates]
+    "*** YOUR CODE HERE ***"
+    evalScore = currentGameState.getScore() # default score
+
+    # Chasing the scaredGhost, avoiding normal Ghost
+    #
+    # Insight: this implementation helps avoiding ghost only.
+    nearGhosts = filter(lambda s: manhattanDistance(s.getPosition(), newPos) <= 1, newGhostStates)
+    evalScore += sum(map(lambda s: 200 if s.scaredTimer else -200, nearGhosts))
+
+    # Eat the capsule if possible to catch the ghost, boost actions that moving close to scared ghost.
+    for c in newCapsule:
+        distance = min(map(lambda g: manhattanDistance(c, g), ghostPositions), default=float('inf'))
+        if distance < 20:
+            evalScore += 40 / manhattanDistance(c, newPos)
+
+    for g in newGhostStates:
+        distance = manhattanDistance(g.getPosition(), newPos)
+        if (2 * distance) < g.scaredTimer:
+            evalScore += 200
+
+    # Eat the foods, considering nearest food position.
+    #
+    # Insight 1: cannot set the numerator larger than 10 (advantage when ate a food),
+    #            otherwise, pacman will choose STOP rather than MOVE.
+    distanceToNearestFood = min(map(lambda c: manhattanDistance(c, newPos), newFood.asList()), default=0)
+    evalScore += 10 / distanceToNearestFood if distanceToNearestFood else 0
+
+    return evalScore
+
+# Abbreviation
+better = betterEvaluationFunction
